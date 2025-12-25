@@ -4,23 +4,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Ножейная</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body class="page">
     <header class="page__header">
-        <div class="burger">
+        <div class="burger" id="burger">
             <div class="burger__line"></div>
             <div class="burger__line"></div>
             <div class="burger__line"></div>
         </div>
+        <nav class="menu" id="menu">
+            <!-- <a href="#portfolio" class="menu__link">Портфолио</a> -->
+            <!-- <a href="#delivery" class="menu__link">Доставка</a> -->
+            <!-- <a href="#contacts" class="menu__link">Контакты</a> -->
+        </nav>
         <div class="logo">
-            <img src="./images/logo-shark.jpg" class="logo__img" alt="Логотип Ножейная">
+            <img draggable="false" src="./images/logo-shark.jpg" class="logo__img" alt="Логотип Ножейная">
             <h1 class="logo__title">Ножейная</h1>
         </div>
-    </header>
 
+    </header>
+    <script>
+        let isAnimating = false;
+        const icon = document.querySelector(".logo__img");
+        icon.addEventListener("click", function () {
+            if (isAnimating) return;
+            isAnimating = true;
+            icon.classList.remove("logo__img--spin");
+            void icon.offsetWidth;
+            icon.classList.add("logo__img--spin");
+        })
+        icon.addEventListener('animationend', () => {
+            isAnimating = false;
+        });
+    </script>
+    <script>
+        const burger = document.getElementById('burger');
+        const menu = document.getElementById('menu');
+
+        function openMenu() {
+            menu.classList.add('menu--open');
+        }
+
+        function closeMenu() {
+            menu.classList.remove('menu--open');
+        }
+
+        burger.addEventListener('click', (e) => {
+            e.stopPropagation();      // чтобы клик по бургеру не считался «вне»
+            openMenu();
+        });
+
+        document.addEventListener('click', (event) => {
+            const clickInsideMenu = menu.contains(event.target) || burger.contains(event.target);
+
+            if (!clickInsideMenu) {
+                // кликнули вне меню и не по бургеру
+                closeMenu();
+            }
+        });
+
+    </script>
     <section class="page__hero hero">
         <img class="hero__img" src="" alt="">
         <h2 class="hero__title">Надёжные ножи на каждый день</h2>
@@ -30,10 +76,24 @@
         <button class="hero__button">Купить</button>
         <!-- <button class="hero__button">Заказать нож</button> -->
         <!-- <button class="hero__button">Оставить заявку</button> -->
+
     </section>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // твой код, который должен ждать разметку
+            const btn = document.querySelector('.hero__button');
 
+            const target = document.getElementById('order__title');
 
+            btn.addEventListener('click', () => {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start',
+                });
+            });
 
+        });
+    </script>
     <section class="portfolio">
         <h2 class="portfolio__title">Реальные ножи, которые я сделал</h2>
         <div class="slider">
@@ -73,7 +133,7 @@
                 <div class="slider__dot"></div>
                 <div class="slider__dot"></div>
             </div>
-            <button class="portfolio__button">Заказать</button>
+            <!-- <button class="portfolio__button">Заказать</button> -->
         </div>
     </section>
     <section class="delivery">
@@ -100,7 +160,91 @@
         <p class="delivery__note">Сроки и стоимость доставки рассчитываются индивидуально</p>
         <button class="delivery__button">Узнать о доставке</button>
     </section>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // твой код, который должен ждать разметку
+            const btn = document.querySelector('.delivery__button');
 
+            const target = document.getElementById('order__title');
+
+            btn.addEventListener('click', () => {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start',
+                });
+            });
+
+        });
+    </script>
+    <section class="order" id="order">
+        <div class="order__title" id="order__title">Заявка</div>
+        <div class="order__subtitle" id="order__subtitle">Заказать нож</div>
+        <form class="order__form">
+            <label class="order__label">
+                Имя
+                <input placeholder="Иван Иванов" type="text" class="order__input">
+            </label>
+            <label class="order__label">
+                Телефон
+                <input id="order__phone" placeholder="8-888-888-88-88" type="tel" maxlength="15" class="order__input">
+            </label>
+
+            <label class="order__label">
+                Почта
+                <input placeholder="Ivanov@mail.ru" type="email" class="order__input">
+            </label>
+            <label class="order__label order__label--textarea" for="">
+                Комментарий
+                <textarea placeholder="Опишите, какой нож нужен" type="text"
+                    class="order__input order__input--textarea"></textarea>
+            </label>
+            <button class="order__submit-button" type="submit">Отправить</button>
+            <p class="order__note">Нажимая "Отправить", Вы соглашаетесь с обработкой данных</p>
+        </form>
+    </section>
+    <script>
+        // СКРИПТ ДЛЯ НОМЕРА ТЕЛЕФОНА
+        const phoneInput = document.getElementById('order__phone');
+
+        phoneInput.addEventListener('input', () => {
+            let value = phoneInput.value.replace(/\D/g, ''); // только цифры
+
+            // обрезаем лишнее
+            value = value.slice(0, 11);
+
+            let result = '';
+
+            if (value.length > 0) {
+                result += value.slice(0, 1);               // 8
+            }
+            if (value.length >= 2) {
+                result += '-' + value.slice(1, 4);         // 800
+            }
+            if (value.length >= 5) {
+                result += '-' + value.slice(4, 7);         // 888
+            }
+            if (value.length >= 8) {
+                result += '-' + value.slice(7, 9);         // 88
+            }
+            if (value.length >= 10) {
+                result += '-' + value.slice(9, 11);        // 88
+            }
+
+            phoneInput.value = result;
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // твой код, который должен ждать разметку
+            const btn = document.querySelector('.order__submit-button');
+
+            btn.addEventListener('click', (event) => {
+                event.preventDefault();
+                alert("Спасибо за заказ!")
+            });
+
+        });
+    </script>
     <footer class="footer">
         <div class="footer__horizontal"></div>
         <div class="footer__container">
@@ -121,22 +265,24 @@
             </div>
         </div>
     </footer>
-    <!-- <div class="search"></div> -->
-    <!-- <img class="pixel-perfect-image" src="./images/layout-header-hero.png" alt=""> -->
-    <!-- <img class="pixel-perfect-image" src="./images/layout-portfolio.png" alt=""> -->
-    <!-- <img class="pixel-perfect-image pixel-perfect-image--delivery" src="./images/layout-delivery.png" alt=""> -->
-    <!-- <img class="pixel-perfect-image pixel-perfect-image--footer" src="./images/layout--footer.png" alt=""> -->
-    <!-- <button id="pixel-perfect-toggle">Вкл/Выкл</button> -->
-    <script>
-        const btn = document.getElementById('pixel-perfect-toggle');
-        const overlay = document.querySelector('.pixel-perfect-image');
+    <div>
+        <div class="search"></div>
+        <!-- <img class="pixel-perfect-image" src="./images/layout-header-hero.png" alt=""> -->
+        <!-- <img class="pixel-perfect-image" src="./images/layout-portfolio.png" alt=""> -->
+        <!-- <img class="pixel-perfect-image pixel-perfect-image--delivery" src="./images/layout-delivery.png" alt=""> -->
+        <!-- <img class="pixel-perfect-image pixel-perfect-image--footer" src="./images/layout--footer.png" alt=""> -->
+        <!-- <img class="pixel-perfect-image pixel-perfect-image--form" src="./layout-images/layout--form.png" alt=""> -->
+        <!-- <button id="pixel-perfect-toggle">Вкл/Выкл</button> -->
+        <script>
+            const btn = document.getElementById('pixel-perfect-toggle');
+            const overlay = document.querySelector('.pixel-perfect-image');
 
 
-        btn.addEventListener('click', () => {
-            overlay.classList.toggle('is-hidden');
-        });
-    </script>
+            btn.addEventListener('click', () => {
+                overlay.classList.toggle('is-hidden');
+            });
+        </script>
+    </div>
 </body>
-
 
 </html>
