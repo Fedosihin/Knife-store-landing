@@ -97,45 +97,194 @@
     <section class="portfolio">
         <h2 class="portfolio__title">Реальные ножи, которые я сделал</h2>
         <div class="slider">
-            <div class="slider__gallery">
-                <div class="knife">
+            <div class="slider__track">
+                <div class="knife slider__slide">
                     <img src="images/bg-tactical-knife.png" alt="Нож сделанный мною" class="knife__img">
                     <div class="knife__details">
                         <h3 class="knife__title">Походный нож "Taika"</h3>
                         <p class="knife__subtitle">Из качественной стали</p>
                     </div>
                 </div>
-                <div class="knife">
+                <div class="knife slider__slide">
                     <img src="images/bg-tactical-knife.png" alt="Нож сделанный мною" class="knife__img">
                     <div class="knife__details">
-                        <h3 class="knife__title">Походный нож "Taika"</h3>
-                        <p class="knife__subtitle">Хорошо сбалансированный</p>
+                        <h3 class="knife__title">Кухонный нож "Шэф"</h3>
+                        <p class="knife__subtitle">Высокая твердость и износостойкость режущей кромки</p>
                     </div>
                 </div>
-                <div class="knife">
+                <div class="knife slider__slide">
                     <img src="images/bg-tactical-knife.png" alt="Нож сделанный мною" class="knife__img">
                     <div class="knife__details">
-                        <h3 class="knife__title">Походный нож "Taika"</h3>
-                        <p class="knife__subtitle">Хорошо сбалансированный, из качественной стали</p>
+                        <h3 class="knife__title">Финка "Сканди"</h3>
+                        <p class="knife__subtitle">Надежное нескользящее хваткое покрытие рукояти</p>
                     </div>
                 </div>
-                <div class="knife">
+                <div class="knife slider__slide">
                     <img src="images/bg-tactical-knife.png" alt="Нож сделанный мною" class="knife__img">
                     <div class="knife__details">
                         <h3 class="knife__title">Походный нож "Taika"</h3>
-                        <p class="knife__subtitle">Хорошо сбалансированный, из качественной стали</p>
+                        <p class="knife__subtitle">Из качественной стали</p>
+                    </div>
+                </div>
+                <div class="knife slider__slide">
+                    <img src="images/bg-tactical-knife.png" alt="Нож сделанный мною" class="knife__img">
+                    <div class="knife__details">
+                        <h3 class="knife__title">Кухонный нож "Шэф"</h3>
+                        <p class="knife__subtitle">Высокая твердость и износостойкость режущей кромки</p>
+                    </div>
+                </div>
+                <div class="knife slider__slide">
+                    <img src="images/bg-tactical-knife.png" alt="Нож сделанный мною" class="knife__img">
+                    <div class="knife__details">
+                        <h3 class="knife__title">Финка "Сканди"</h3>
+                        <p class="knife__subtitle">Надежное нескользящее хваткое покрытие рукояти</p>
+                    </div>
+                </div>
+               
+                <div class="knife slider__slide">
+                    <img src="images/bg-tactical-knife.png" alt="Нож сделанный мною" class="knife__img">
+                    <div class="knife__details">
+                        <h3 class="knife__title">Складной нож "Buck"</h3>
+                        <p class="knife__subtitle">Долго держит заточку</p>
                     </div>
                 </div>
             </div>
             <div class="slider__dots">
-                <div class="slider__dot"></div>
-                <div class="slider__dot slider__dot--active"></div>
-                <div class="slider__dot"></div>
-                <div class="slider__dot"></div>
+                <!-- <div class="slider__dot"></div> -->
+                <!-- <div class="slider__dot slider__dot--active"></div> -->
+                <!-- <div class="slider__dot"></div> -->
+                <!-- <div class="slider__dot"></div> -->
             </div>
+            <button class="slider__button slider__button--prev">prev</button>
+            <button class="slider__button slider__button--next">next</button>
             <!-- <button class="portfolio__button">Заказать</button> -->
         </div>
     </section>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const track = document.querySelector('.slider__track');
+            const slides = Array.from(document.querySelectorAll('.slider__slide'));
+            const prevBtn = document.querySelector('.slider__button--prev');
+            const nextBtn = document.querySelector('.slider__button--next');
+
+            const slidesToShow = 2;      // видно 2
+            const step = 100 / slidesToShow; // один шаг = 50%
+            let index = 1;               // левый видимый
+
+            const dotsContainer = document.querySelector('.slider__dots');
+
+
+            // создаём точки
+            slides.forEach((_, indexFE) => {
+                const dot = document.createElement('button');
+                dot.classList.add('slider__dot');
+                if (indexFE === index) dot.classList.add('slider__dot--active');
+
+                dot.addEventListener('click', () => {
+                    index = indexFE;
+                    updateSlider();
+                });
+                if (indexFE !== slides.length - 1) {
+                    dotsContainer.appendChild(dot);
+                }
+            });
+
+            const dots = Array.from(document.querySelectorAll('.slider__dot'));
+
+            function updateSlider() {
+                // максимум: так, чтобы справа ещё было место хотя бы под один слайд
+                const maxIndex = slides.length - slidesToShow;
+                // if (index < 0) index = 0;
+                if (index < 0) index = maxIndex;
+                // if (index > maxIndex) index = maxIndex;
+                if (index > maxIndex) index = 0;
+
+                const offset = -index * step;
+                track.style.transform = `translateX(${offset}%)`;
+
+                dots.forEach(dot => dot.classList.remove('slider__dot--active'));
+                dots[index].classList.add('slider__dot--active');
+            }
+
+
+            nextBtn.addEventListener('click', () => {
+                index += 1;        // двигаем на один слайд
+                updateSlider();
+            });
+
+            prevBtn.addEventListener('click', () => {
+                index -= 1;
+                updateSlider();
+            });
+
+            updateSlider();
+
+            // СВАЙП
+            const slider = document.querySelector('.slider');
+            let startX = null;
+
+            slider.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].clientX;
+            });
+
+            slider.addEventListener('touchend', (e) => {
+                if (startX === null) return;
+
+                const endX = e.changedTouches[0].clientX;
+                const diff = startX - endX;
+                const threshold = 50; // минимальный свайп
+
+                if (diff > threshold) {
+                    // свайп влево → следующий
+                    // goToNextSlide();
+                    index += 1;        // двигаем на один слайд
+                    updateSlider();
+                    pauseAutoplayFor(5000);
+                } else if (diff < -threshold) {
+                    // свайп вправо → предыдущий
+                    // goToPrevSlide();
+                    index -= 1;        // двигаем на один слайд
+                    updateSlider();
+                    pauseAutoplayFor(5000);
+                }
+
+                startX = null;
+            });
+
+            // АВТОПЛЕЙ
+            let autoplayId = null;
+
+            function startAutoplay() {
+                // чтобы не создать два интервала
+                if (autoplayId !== null) return;
+
+                autoplayId = setInterval(() => {
+                    index += 1;
+                    updateSlider();
+                    // goToNextSlide(); // твоя функция переключения
+                }, 3000); // каждые 3 секунды
+            }
+
+            function stopAutoplay() {
+                clearInterval(autoplayId);
+                autoplayId = null;
+            }
+
+            // ПАУЗА
+            let resumeTimeoutId = null;
+
+            function pauseAutoplayFor(ms) {
+                stopAutoplay();            // сразу остановили
+
+                clearTimeout(resumeTimeoutId); // если уже был таймер — сбрасываем
+                resumeTimeoutId = setTimeout(() => {
+                    startAutoplay();         // через ms снова запустим
+                }, ms);
+            }
+
+            startAutoplay();
+        })
+    </script>
     <section class="delivery">
         <h2 class="delivery__title">Удобная доставка по России</h2>
         <p class="delivery__subtitle">Мы отправляем заказы через популярные службы Ozon и СДЭК</p>
