@@ -1,5 +1,16 @@
 /* ОБЩИЕ СТИЛИ */
 
+.button-black {
+    border: none;
+    background-color: var(--bgc-black);
+    color: var(--font-color-white);
+    margin-top: 26px;
+    height: 50px;
+    width: 100%;
+    font-size: 20px;
+    border-radius: 50px;
+}
+
 button {
     transition: transform 0.5s ease;
 }
@@ -91,7 +102,11 @@ body {
 .pixel-perfect-image--form {
     top: 1540px;
     width: 120%;
-    /* opacity: 1; */
+}
+
+.pixel-perfect-image--steps {
+    top: 2200px;
+    width: 160%;
 }
 
 .pixel-perfect-image.is-hidden {
@@ -682,4 +697,126 @@ a {
     font-size: 14px;
     letter-spacing: -0.1px;
     text-align: center;
+}
+
+/*  */
+/* === STEPS */
+
+.process {
+    margin-top: 70px;
+    padding: 0 20px;
+}
+
+.process__title {
+    max-width: 300px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.process__subtitle {
+    text-align: center;
+    max-width: 200px;
+    margin: 0 auto;
+    margin-top: 6px;
+    color: var(--font-grey-darker);
+}
+
+.process__list {
+    margin-top: 20px;
+    position: relative;
+    list-style: none;
+    counter-reset: process;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.process__list::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 48px;
+    bottom: 0;
+    z-index: -4;
+    width: 2px;
+    background-color: var(--bgc-black);
+}
+
+.process_item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+}
+
+.process__icon {
+    flex: 0 0 76px;
+    height: 76px;
+    margin-left: 10px;
+    display: flex;
+    background-color: var(--bgc-white);
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--bgc-black);
+    border-radius: 50%;
+}
+
+.process__img {
+    width: 100%;
+    height: auto;
+}
+
+.process__img--msg {
+    width: 72%;
+    transform: translateX(1px) translateY(2px);
+}
+
+.process__img--knife {
+    width: 85%;
+    transform: translateX(1px) translateY(-3px);
+}
+
+.process__img--hammer {
+    width: 78%;
+    transform: translateX(3px) translateY(-2px);
+}
+
+.process__step-counter {
+    content: counter(process);
+    counter-increment: process;
+}
+
+.process__step-counter::before {
+    content: counter(process);
+    /* position: absolute; */
+    left: 0;
+    top: 0;
+    font-size: 32px;
+    font-weight: 800;
+}
+
+.process__content {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+.process__step-title {
+    margin-top: 6px;
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.process__step-description {
+    margin-top: 6px;
+    font-size: 18px;
+    color: var(--font-grey-darker);
+}
+
+.process__note {
+    text-align: center;
+    margin: 0 auto;
+    margin-top: 30px;
+    max-width: 300px;
+    color: var(--font-grey-darker);
 }
